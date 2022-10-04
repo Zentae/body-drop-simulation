@@ -1,1 +1,1 @@
-![alt text](https://github.com/Zentae/body-drop-simulation/blob/master/results/result.jpg?raw=true)
+![alt text](https://github.com/Zentae/body-drop-simulation/blob/master/results/result.png?raw=true)
