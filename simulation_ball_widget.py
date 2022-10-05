@@ -20,7 +20,7 @@ class SimulationBall(QLabel):
         # set screen's heigth
         self.__screen_height = window.height()
         # prepare our image
-        self.__pixmap = QPixmap("falling-corpses/img/tennis-ball.png")
+        self.__pixmap = QPixmap("C:/Users/camil/Bureau/falling-corpse/img/tennis-ball.png")
         self.__pixmap.scaled(10, 10, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
         # prepare our image holder
         self.setScaledContents(True)
@@ -76,7 +76,7 @@ class SimulationBall(QLabel):
         # initial position
         y = self.y()
         while True:
-            if v <= -1 and y <= -(self.__screen_height - 100) or self._current.stopped():
+            if self._current.stopped():
                 # clean the data
                 for i in range(len(height_array)):
                     if height_array[i] < 0:
@@ -89,7 +89,7 @@ class SimulationBall(QLabel):
             # fill our height array
             height_array.append((innitial_y + y) * 0.0265)
             time.sleep(0.01)
+            y = y - v * delta_time if y - v * delta_time >= -(self.__screen_height - 100) else -(self.__screen_height - 100) 
             v = -v * restitution if y <= -(self.__screen_height - 100) else v + g * delta_time
-            y = y - v * delta_time
             delta_time += 0.01
             self.setGeometry(470, abs(y), 120, 100)
