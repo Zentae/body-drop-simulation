@@ -20,7 +20,7 @@ class SimulationBall(QLabel):
         # set screen's heigth
         self.__screen_height = window.height()
         # prepare our image
-        self.__pixmap = QPixmap("C:/Users/camil/Bureau/falling-corpse/img/tennis-ball.png")
+        self.__pixmap = QPixmap("falling-corpses/img/tennis-ball.png")
         self.__pixmap.scaled(10, 10, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
         # prepare our image holder
         self.setScaledContents(True)
@@ -59,37 +59,38 @@ class SimulationBall(QLabel):
         self.__window.layout().addWidget(graphic)
 
     def __c(self, parameters:list):
-        # create our time array
-        time_array = []
-        # create our height array
-        height_array = []
-        # initial velocity
-        v = parameters[0]
-        # earth gravity
-        g = parameters[1]
-        # initial delta time 
-        delta_time = 0.0
-        # restitution coeficient
-        restitution = parameters[2]
-        # immutable parameter
-        innitial_y = self.__screen_height - 100
+        # create our data arrays
+        time_array, height_array = ([], [])
+        # inject our velocity, gravity and restitution coeficient
+        v, g, r = (parameters[0], parameters[1], parameters[2])
+        # innit the delta and define the screen limit
+        dt, limit = (0.0, 640)
         # initial position
         y = self.y()
         while True:
             if self._current.stopped():
                 # clean the data
-                for i in range(len(height_array)):
+                """for i in range(len(height_array)):
                     if height_array[i] < 0:
-                        height_array[i] = 0
+                        height_array[i] = 0"""
                 # return the data
                 self._current.set_return_value([time_array, height_array])
                 break
+            # check if we are out of the screen
+            if y > limit and v > 0:
+                v = -abs(v * r)
+                y = limit
+            else:
+                v += g * dt
+                # update the y coordinate
+                y -= -v * dt
+            # increment our delta
+            dt += 0.01
             # fill our time array
-            time_array.append(delta_time)
+            time_array.append(dt)
             # fill our height array
-            height_array.append((innitial_y + y) * 0.0265)
+            height_array.append((limit - y) * 0.0265)
+            # update ball position
+            self.setGeometry(470, y, 120, 100)
+            # sleep for 0.01 second
             time.sleep(0.01)
-            y = y - v * delta_time if y - v * delta_time >= -(self.__screen_height - 100) else -(self.__screen_height - 100) 
-            v = -v * restitution if y <= -(self.__screen_height - 100) else v + g * delta_time
-            delta_time += 0.01
-            self.setGeometry(470, abs(y), 120, 100)
