@@ -16,7 +16,7 @@ class SimulationWindow(QMainWindow):
     def __init__(self):
         super().__init__(None)
         # set window's title
-        self.setWindowTitle("Falling corpses")
+        self.setWindowTitle("Body fall simulation")
         # get tkinter
         tk = tkinter.Tk()
         # set window's size

@@ -28,7 +28,7 @@ class ParameterWidget(QWidget):
         self.__coefficient_label = QLabel("Coéfficient de restitution")
         self.__coefficient_spin_box = QDoubleSpinBox()
         # set coefficient minimum & maximum value
-        self.__coefficient_spin_box.setValue(0.6)
+        self.__coefficient_spin_box.setValue(0.8)
         self.__coefficient_spin_box.setRange(.1, 1.)
         self.__coefficient_spin_box.setSingleStep(.01)
         # set the start button.

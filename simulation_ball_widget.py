@@ -17,10 +17,8 @@ class SimulationBall(QLabel):
         # inject our window
         self.__window = window
         self._current = None
-        # set screen's heigth
-        self.__screen_height = window.height()
         # prepare our image
-        self.__pixmap = QPixmap("falling-corpses/img/tennis-ball.png")
+        self.__pixmap = QPixmap("body-drop-simulation/img/tennis-ball.png")
         self.__pixmap.scaled(10, 10, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
         # prepare our image holder
         self.setScaledContents(True)
@@ -64,33 +62,29 @@ class SimulationBall(QLabel):
         # inject our velocity, gravity and restitution coeficient
         v, g, r = (parameters[0], parameters[1], parameters[2])
         # innit the delta and define the screen limit
-        dt, limit = (0.0, 640)
+        t, dt, limit = (0, 0.01, 1)
         # initial position
         y = self.y()
         while True:
-            if self._current.stopped():
-                # clean the data
-                """for i in range(len(height_array)):
-                    if height_array[i] < 0:
-                        height_array[i] = 0"""
+            if self._current.stopped() or (y > 1 and v < 0.05):
                 # return the data
                 self._current.set_return_value([time_array, height_array])
                 break
             # check if we are out of the screen
-            if y > limit and v > 0:
+            if y > limit:
                 v = -abs(v * r)
                 y = limit
             else:
                 v += g * dt
                 # update the y coordinate
-                y -= -v * dt
-            # increment our delta
-            dt += 0.01
+                y += v * dt
+            # increment our time
+            t += dt
             # fill our time array
-            time_array.append(dt)
+            time_array.append(t)
             # fill our height array
-            height_array.append((limit - y) * 0.0265)
+            height_array.append((limit - y))
             # update ball position
-            self.setGeometry(470, y, 120, 100)
-            # sleep for 0.01 second
-            time.sleep(0.01)
+            self.setGeometry(470, y * 640, 120, 100)
+            # sleep for dt second
+            time.sleep(dt)

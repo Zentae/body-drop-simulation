@@ -11,6 +11,6 @@ class GraphicWidget(FigureCanvasQTAgg):
         self.axes = fig.add_subplot(111)
         self.axes.set_title("Evolution de la hauteur de la balle \n au cours du temps")
         self.axes.set_xlabel("temps (s)")
-        self.axes.set_ylabel("hauteur (cm)")
+        self.axes.set_ylabel("hauteur (m)")
         self.axes.plot(x_axis, y_axis)
         super(GraphicWidget, self).__init__(fig)
